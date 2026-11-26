@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f1f5f9">
+  <title>Half Adder Simulator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <h1>Half Adder Simulator</h1>
+        <p>Digital Fundamentals <span aria-hidden="true">•</span> Array Data Structure</p>
+      </div>
+      <div class="header-actions">
+        <button class="button button-primary" id="calculate-button" type="button">Calculate</button>
+        <button class="button button-secondary" id="reset-button" type="button">Reset</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="left-column" aria-label="Inputs and array memory">
+        <section class="card inputs-card" aria-labelledby="inputs-title">
+          <h2 id="inputs-title">Inputs <span>(Array)</span></h2>
+          <div class="input-list">
+            <div class="input-row" data-input="a">
+              <span class="input-name">Input A</span>
+              <div class="bit-controls" role="group" aria-label="Input A">
+                <button class="bit-button is-selected" type="button" data-bit="0" aria-pressed="true" aria-label="Input A: 0">0</button>
+                <button class="bit-button" type="button" data-bit="1" aria-pressed="false" aria-label="Input A: 1">1</button>
+              </div>
+            </div>
+            <div class="input-row" data-input="b">
+              <span class="input-name">Input B</span>
+              <div class="bit-controls" role="group" aria-label="Input B">
+                <button class="bit-button is-selected" type="button" data-bit="0" aria-pressed="true" aria-label="Input B: 0">0</button>
+                <button class="bit-button" type="button" data-bit="1" aria-pressed="false" aria-label="Input B: 1">1</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card memory-card" aria-labelledby="memory-title">
+          <div class="card-title-row">
+            <h2 id="memory-title">Array Memory</h2>
+            <code>circuit[4]</code>
+          </div>
+          <div class="memory-grid" role="list" aria-label="Circuit array">
+            <div class="memory-cell" role="listitem" data-cell="0">
+              <span class="memory-index">[0]</span>
+              <strong class="memory-value">0</strong>
+              <span class="memory-label">Input A</span>
+            </div>
+            <div class="memory-cell" role="listitem" data-cell="1">
+              <span class="memory-index">[1]</span>
+              <strong class="memory-value">0</strong>
+              <span class="memory-label">Input B</span>
+            </div>
+            <div class="memory-cell" role="listitem" data-cell="2">
+              <span class="memory-index">[2]</span>
+              <strong class="memory-value">0</strong>
+              <span class="memory-label">Sum</span>
+              <span class="memory-formula">A ^ B</span>
+            </div>
+            <div class="memory-cell" role="listitem" data-cell="3">
+              <span class="memory-index">[3]</span>
+              <strong class="memory-value">0</strong>
+              <span class="memory-label">Carry</span>
+              <span class="memory-formula">A &amp; B</span>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="right-column" aria-label="Circuit results">
+        <div class="outputs-row" aria-live="polite" aria-atomic="true">
+          <section class="card output-card" aria-labelledby="sum-title">
+            <h2 id="sum-title">SUM</h2>
+            <output class="output-value" id="sum-output" aria-label="Sum output">0</output>
+          </section>
+          <section class="card output-card" aria-labelledby="carry-title">
+            <h2 id="carry-title">CARRY</h2>
+            <output class="output-value" id="carry-output" aria-label="Carry output">0</output>
+          </section>
+        </div>
+
+        <section class="card circuit-card" aria-labelledby="circuit-title">
+          <div class="card-title-row">
+            <h2 id="circuit-title">Logic Circuit</h2>
+            <div class="legend" aria-label="Signal legend">
+              <span><i class="legend-dot one-dot"></i> 1</span>
+              <span><i class="legend-dot zero-dot"></i> 0</span>
+            </div>
+          </div>
+          <div class="circuit-frame">
+            <svg class="circuit-svg" viewBox="0 0 820 300" role="img" aria-labelledby="diagram-title diagram-description" xmlns="http://www.w3.org/2000/svg">
+              <title id="diagram-title">Half adder logic circuit</title>
+              <desc id="diagram-description">Inputs A and B feed an XOR gate for Sum and an AND gate for Carry.</desc>
+              <g class="wires">
+                <path class="wire" data-signal="a" d="M96 80H190M190 80H315M190 80V180H315"/>
+                <path class="wire" data-signal="b" d="M96 145H235M235 145V125H315M235 145V215H315"/>
+                <path class="wire" data-signal="sum" d="M472 102H690"/>
+                <path class="wire" data-signal="carry" d="M472 198H690"/>
+              </g>
+              <g class="nodes">
+                <circle class="node" data-signal="a" cx="190" cy="80" r="5"/>
+                <circle class="node" data-signal="b" cx="235" cy="145" r="5"/>
+                <circle class="node" data-signal="sum" cx="472" cy="102" r="5"/>
+                <circle class="node" data-signal="carry" cx="472" cy="198" r="5"/>
+              </g>
+              <g class="input-labels">
+                <text class="signal-name" x="24" y="85">A</text>
+                <text class="signal-bit" data-signal="a" id="svg-a" x="65" y="85">0</text>
+                <text class="signal-name" x="24" y="150">B</text>
+                <text class="signal-bit" data-signal="b" id="svg-b" x="65" y="150">0</text>
+              </g>
+              <g class="gates">
+                <path class="gate xor-gate" d="M330 48C375 56 432 73 472 102C432 131 375 148 330 156C350 124 350 80 330 48ZM313 48C335 80 335 124 313 156"/>
+                <text class="gate-label" x="391" y="107">XOR</text>
+                <path class="gate and-gate" d="M315 158H366C427 158 472 172 472 198C472 224 427 238 366 238H315Z"/>
+                <text class="gate-label" x="386" y="203">AND</text>
+              </g>
+              <g class="output-labels">
+                <text class="signal-name" x="710" y="96">Sum</text>
+                <text class="signal-bit" data-signal="sum" id="svg-sum" x="710" y="121">0</text>
+                <text class="signal-name" x="710" y="192">Carry</text>
+                <text class="signal-bit" data-signal="carry" id="svg-carry" x="710" y="217">0</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <section class="card truth-card" aria-labelledby="truth-title">
+          <div class="card-title-row">
+            <h2 id="truth-title">Truth Table</h2>
+            <code>truthTable[4][4]</code>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th scope="col">A</th><th scope="col">B</th><th scope="col">Sum</th><th scope="col">Carry</th></tr>
+              </thead>
+              <tbody id="truth-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
